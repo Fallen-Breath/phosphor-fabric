@@ -26,15 +26,13 @@ public abstract class MixinChunkSerializer {
             ordinal = 0
         )
     )
-    private static void loadLightmaps(final ServerWorld world, final PointOfInterestStorage poiStorage, final ChunkPos pos, final NbtCompound tag, final CallbackInfoReturnable<ProtoChunk> ci) {
-        final NbtCompound levelTag = tag.getCompound("Level");
-
+    private static void loadLightmaps(final ServerWorld world, final PointOfInterestStorage poiStorage, final ChunkPos pos, final NbtCompound nbt, final CallbackInfoReturnable<ProtoChunk> ci) {
         // Load lightmaps of pre_light chunks unless erasing cached data
-        if (levelTag.getBoolean("isLightOn") || !levelTag.contains("Heightmaps", 10)) {
+        if (nbt.getBoolean("isLightOn") || !nbt.contains("Heightmaps", 10)) {
             return;
         }
 
-        final NbtList sections = levelTag.getList("Sections", 10);
+        final NbtList sections = nbt.getList("Sections", 10);
         final LightingProvider lightingProvider = world.getChunkManager().getLightingProvider();
         final boolean hasSkyLight = world.getDimension().hasSkyLight();
 
